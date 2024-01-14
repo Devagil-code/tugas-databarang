@@ -1,4 +1,26 @@
 <?php
+session_start();
+
+// Cek apakah sesi login sudah terdaftar
+if (!isset($_SESSION['user_id'])) {
+    // Jika belum, redirect ke halaman login.php
+    header("Location: login.php");
+    exit();
+}
+
+// Jika tombol logout diklik
+if (isset($_GET['logout'])) {
+    // Hapus semua data sesi
+    session_unset();
+    
+    // Hancurkan sesi
+    session_destroy();
+
+    // Redirect ke halaman login.php setelah logout
+    header("Location: login.php");
+    exit();
+}
+
 include 'koneksi.php';
 
 // Lakukan query
@@ -24,7 +46,9 @@ $result = $conn->query("SELECT * FROM barang");
         <span>Jurusan: Sistem Informasi</span><br>
         <span>NPM: 2021804050</span><br>
     </p>
-    <a class="btn btn-primary" href='tambah.php' >Tambah Barang</a>
+    <!-- Tambahkan link untuk logout -->
+    <a href="?logout=true" class="btn btn-danger">Logout</a>
+    <a class="btn btn-primary" href='tambah.php'>Tambah Barang</a>
     <h2>Data Barang</h2>
 
     <input type="text" id="search" placeholder="Cari barang" class="form-control mb-3">
